@@ -162,10 +162,10 @@ define([
             this.velocity.set(0, 0);
             this.isCollidable = false;
             killer.onKill(this);
-            this.setActiveAnimation('die', function(forced) {
+            //this.setActiveAnimation('die', function(forced) {
                 console.log(this.name + ' (' + this.id + ') has been killed by ' + killer.name + ' (' + killer.id + ')');
                 gf.game.removeObject(this);
-            });
+            //});
         },
         onKill: function() {}
     });

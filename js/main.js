@@ -44,7 +44,7 @@
 
                 function bgScroll() {
                     current += 1;
-                    $('#game').css("backgroundPosition", (direction == 'h') ? current+"px 0" : "0 " + current+"px");
+                    $('#game').css('backgroundPosition', (direction == 'h') ? current + 'px 0' : '0 ' + current + 'px');
                 }
                 var inv = setInterval(bgScroll, scrollSpeed);
             });
@@ -75,6 +75,20 @@
         }
 
         function initEnemies() {
+            var rows = 3,
+                cols = 21;
+
+            for(var x = 0; x < cols; ++x) {
+                for(var y = 0; y < rows; ++y) {
+                    var sham = gf.entityPool.create('sham', {
+                        position: [
+                            (x * 40) - (cols * 20),
+                            (y * 40) + 400
+                        ]
+                    });
+                    gf.game.addObject(sham);
+                }
+            }
             //initialize the enemy and add to game
             /*var enemy = gf.entityPool.create('darknight', {
                 position: [400, 0]

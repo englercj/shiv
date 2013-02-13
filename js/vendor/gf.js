@@ -608,7 +608,8 @@ Class.extend = function(prop) {
                 //check if this object collides with any others
                 if(o.inViewport && o.isVisible && o.isCollidable && o.isEntity && (o != obj)) {
                     var collisionVector = o.checkCollision(obj);
-                    if(collisionVector.x !== 0 && collisionVector.y !== 0) {
+                    //JELLO: FIXED THIS BEING && BUT SHOULD BE ||
+                    if(collisionVector.x !== 0 || collisionVector.y !== 0) {
                         colliders.push({
                             entity: o,
                             vector: collisionVector
@@ -1634,8 +1635,8 @@ Class.extend = function(prop) {
         },
         //from http://gamedev.stackexchange.com/questions/586/what-is-the-fastest-way-to-work-out-2d-bounding-box-intersection
         intersects: function(entity)  {
-            return (Math.abs(this._hitboxMesh.position.x - entity._hitboxMesh.position.x) * 2 < (this.hitSize.x + entity.hitSize.x)) && 
-                    (Math.abs(this._hitboxMesh.position.y - entity._hitboxMesh.position.y) * 2 < (this.hitSize.y + entity.hitSize.y));
+            return (Math.abs(this._hitboxMesh.position.x - entity._hitboxMesh.position.x) * 2 <= (this.hitSize.x + entity.hitSize.x)) && 
+                    (Math.abs(this._hitboxMesh.position.y - entity._hitboxMesh.position.y) * 2 <= (this.hitSize.y + entity.hitSize.y));
         },
         checkCollision: function(entity) {
             //response vector

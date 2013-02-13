@@ -20,7 +20,7 @@ define([
             settings.texture = settings.texture || gf.resources.player_sprite.data;
 
             //acceleration
-            settings.accel = settings.accel || [250, 250];
+            settings.accel = settings.accel || [300, 300];
 
             //maximum health of this entity
             settings.maxHealth = 5;
@@ -47,7 +47,7 @@ define([
             gf.controls.bindKey(gf.types.KEY.NUMPAD_DOT, 'bomb', this.onBomb.bind(this));
             gf.controls.bindKey(gf.types.KEY.B, 'bomb', this.onBomb.bind(this));
 
-            this.shootWait = 100;
+            this.shootWait = 85;
             this.shootReady = true;
 
             //make the camera track this entity
@@ -59,17 +59,6 @@ define([
      
             //update player movement
             this.updateMovement();
-
-            //check for collisions with other entities
-            var colliders = gf.game.checkCollisions(this);
-         
-            if(colliders.length) {
-                //if we collide with an enemy
-                //if(collider.type == gf.types.ENTITY.ENEMY) {
-                    //TODO: take damage, and do damage animation
-                    //this.flicker(45);
-                //}
-            }
 
             this._super();
         },
@@ -93,6 +82,16 @@ define([
             else {
                 this.velocity.y = 0;
             }
+
+            //ensure we stay in the box
+            var nx = this._mesh.position.x + this.velocity.x,
+                ny = this._mesh.position.y + this.velocity.y;
+
+            if(nx < -495 || nx > 495)
+                this.velocity.x = 0;
+
+            if(ny < -330 || ny > 355)
+                this.velocity.y = 0;
         },
         takeDamage: function(dmg, attacker) {
             var nh = this.health - dmg < 0 ? 0 : this.health - dmg;
