@@ -17,8 +17,7 @@
             //initialize the renderer
             gf.game.init('game', {
                 gravity: 0,
-                friction: [0, 0],
-                clearColor: 0x111111
+                friction: [0, 0]
             });
 
             //load resources
@@ -38,6 +37,16 @@
 
                 //start render loop
                 gf.game.render();
+
+                var scrollSpeed = 50,
+                    direction = 'v',
+                    current = 0;
+
+                function bgScroll() {
+                    current += 1;
+                    $('#game').css("backgroundPosition", (direction == 'h') ? current+"px 0" : "0 " + current+"px");
+                }
+                var inv = setInterval(bgScroll, scrollSpeed);
             });
 
             gf.event.subscribe(gf.types.EVENT.LOADER_ERROR, function(err, resource) { console.log(err, resource); });

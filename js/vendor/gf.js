@@ -428,9 +428,9 @@ Class.extend = function(prop) {
 
             opts = opts || {};
 
+            //JELLO: GET RID OF CLEARCOLOR
             gf.game.gravity = (opts.gravity !== undefined ? opts.velocity : 0.98);
             gf.game.friction = gf.utils.ensureVector(opts.friction);
-            gf.game.clearColor = opts.clearColor || 0xcccccc;
 
             /****************************************************************************
              * Choose a render method (WebGL or Canvas)
@@ -460,7 +460,7 @@ Class.extend = function(prop) {
                     alpha: true,
                     premultipliedAlpha: true,
                     antialias: false,
-                    clearColor: gf.game.clearColor,
+                    //clearColor: gf.game.clearColor,
                     clearAlpha: 0,
                     maxLights: 4
                 });

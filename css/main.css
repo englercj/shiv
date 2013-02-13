@@ -67,6 +67,7 @@ h1 {
     position: absolute;
     top: -384px;
     width: 1024px;
+    background:center top url(/assets/ui/starworld1.gif) #000;
     -moz-user-select: none;
     -webkit-user-select: none;
     -ms-user-select: none;

@@ -16,7 +16,7 @@ define([
             settings.type = settings.type || types.ENTITY.PROJECTILE;
 
             //default distance to travel before expiring
-            this.distance = new THREE.Vector2(0, 500);
+            this.distance = new THREE.Vector2(0, 1000);
 
             //who owns the projectile
             this.owner = null;

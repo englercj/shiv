@@ -24,7 +24,7 @@ define([
 
             settings.damage = settings.damage || 2;
             //settings.texture = settings.texture || gf.resources.bullet_sprite.data;
-            settings.size = settings.size || [16, 500];
+            settings.size = settings.size || [16, 1000];
             //settings.hitSize = settings.hitSize || [40, 20];
         }
     }))
