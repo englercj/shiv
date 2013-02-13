@@ -161,9 +161,10 @@ define([
         die: function(killer) {
             this.velocity.set(0, 0);
             this.isCollidable = false;
-            killer.onKill(this);
+            if(killer) killer.onKill(this);
+            gf.event.publish('entity.die', this.id);
             //this.setActiveAnimation('die', function(forced) {
-                console.log(this.name + ' (' + this.id + ') has been killed by ' + killer.name + ' (' + killer.id + ')');
+                if(killer) console.log(this.name + ' (' + this.id + ') has been killed by ' + killer.name + ' (' + killer.id + ')');
                 gf.game.removeObject(this);
             //});
         },

@@ -32,26 +32,57 @@
 
                 //initialize player
                 initPlayer();
-                //initialize enemy
-                initEnemies();
+
+                var rounds = [
+                    //rows, cols, moveSpeed, fireRate
+                    [2, 5, 25, 0.15],
+                    [3, 10, 50, 0.30],
+                    [4, 15, 75, 0.45],
+                    [5, 20, 100, 0.60]
+                ];
+
+                doRound(0);
+                function doRound(i) {
+                    var args = Array.apply(null, rounds[i]);
+                    args.push(function() {
+                        setTimeout(doRound.bind(null, i + 1), 1000);
+                    });
+
+                    playRound.apply(null, args);
+                }
+
+                var current = 0,
+                    inv = setInterval(bgScroll, args[4]);
+                function bgScroll() {
+                    current += 1;
+                    $('#game').css('backgroundPosition', '0 ' + current + 'px');
+                }
 
                 //start render loop
                 gf.game.render();
-
-                var scrollSpeed = 50,
-                    direction = 'v',
-                    current = 0;
-
-                function bgScroll() {
-                    current += 1;
-                    $('#game').css('backgroundPosition', (direction == 'h') ? current + 'px 0' : '0 ' + current + 'px');
-                }
-                var inv = setInterval(bgScroll, scrollSpeed);
             });
 
             gf.event.subscribe(gf.types.EVENT.LOADER_ERROR, function(err, resource) { console.log(err, resource); });
             gf.loader.load(data.resources);
         });
+
+        function playRound(rows, cols, moveSpeed, fireRate, cb) {
+            //initialize enemy
+            var enemies = initEnemies(rows, cols, moveSpeed, fireRate);
+
+            var die = function(id) {
+                var i = enemies.indexOf(id);
+
+                enemies.splice(i, 1);
+
+                if(enemies.length === 0) {
+                    gf.event.unsubscribe('entity.die', die);
+                    cb();
+                }
+            }
+
+            gf.event.subscribe('entity.die', die);
+        }
 
         function initHud() {
             gf.HUD.init();
@@ -74,9 +105,8 @@
             gf.game.addObject(player);
         }
 
-        function initEnemies() {
-            var rows = 3,
-                cols = 21;
+        function initEnemies(rows, cols, moveSpeed, fireRate) {
+            var ids = [];
 
             for(var x = 0; x < cols; ++x) {
                 for(var y = 0; y < rows; ++y) {
@@ -84,11 +114,16 @@
                         position: [
                             (x * 40) - (cols * 20),
                             (y * 40) + 400
-                        ]
+                        ],
+                        accel: [moveSpeed, moveSpeed],
+                        fireRate: fireRate
                     });
+                    ids.push(sham.id);
                     gf.game.addObject(sham);
                 }
             }
+
+            return ids;
             //initialize the enemy and add to game
             /*var enemy = gf.entityPool.create('darknight', {
                 position: [400, 0]
