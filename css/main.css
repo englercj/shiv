@@ -1,0 +1,86 @@
+body {
+    background:left top url(../assets/ui/bg.jpg) repeat #EBEBEB;
+    color: black;
+    font-family: Verdana,sans-serif;
+    margin: 0;
+}
+
+h1 {
+    font-size: 1.4em;
+}
+
+/* HUD */
+.gf-hud {
+    color: #FFF;
+    font-style: italic;
+    text-align: center;
+
+    /*height: 150px;
+    top: -275px;
+
+    width: 700px;
+    left: 50%;
+    margin-left: -350px;
+    position: absolute;
+
+    display:none;
+    z-index: 100;*/
+}
+
+.gf-hud-item.gf-hud-health {
+    /*background: left top url(../assets/ui/magic_meter.png) no-repeat;*/
+    border-top: solid 1px #CCC;
+    border-radius: 4px 4px 0 0;
+    width: 1024px;
+    height: 32px;
+}
+
+.gf-hud-item.gf-hud-health-value {
+    background: rgb(200, 0, 15);
+    border-radius: 4px 4px 0 0;
+    height: 32px;
+}
+
+.gf-hud-item.gf-hud-score {
+}
+
+/* Main game area */
+#game-container {
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 0;
+    height: 1px;
+    width: 100%;
+    overflow: visible;
+    text-align: center;
+    visibility: visible;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+}
+
+#game {
+    height: 768px;
+    left: 50%;
+    margin-left: -512px;
+    position: absolute;
+    top: -384px;
+    width: 1024px;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    /*display: none;*/
+}
+
+#game canvas {
+    /*display: block;*/
+    height: 768px;
+    left: 0;
+    margin: 0;
+    position: absolute;
+    top: 0;
+    width: 1024px;
+}
+
+#gl-error { margin: 0.5em; }
