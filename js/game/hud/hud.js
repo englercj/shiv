@@ -32,14 +32,16 @@ define([
                 }).appendTo(this.$elm);
             }
         }),
-        Score: gf.HudItem.extend({
+        Text: gf.HudItem.extend({
             init: function(x, y, settings) {
+                this.title = 'Title';
+
                 this._super(x, y, settings);
             },
             update: function() {
                 if(!this.dirty) return;
 
-                this.$elm.text('Score: ' + this.value);
+                this.$elm.text(this.title + ': ' + this.value);
 
                 this.dirty = false;
                 return this;
@@ -47,7 +49,7 @@ define([
             _createElement: function(x, y) {
                 this._super(x, y);
                 this.$elm = $(this.elm);
-                this.$elm.addClass('gf-hud-score');
+                this.$elm.addClass('gf-hud-text');
             }
         }),
         MusicMute: gf.HudItem.extend({
@@ -56,15 +58,16 @@ define([
             },
             onClick: function() {
                 this.setValue(!this.value);
+                this.update();
             },
             update: function() {
                 if(!this.dirty) return;
 
                 if(this.value === true) {
-                    gf.audio.pause('music');
+                    gf.audio.pauseAll();
                     this.$elm.addClass('paused');
                 } else {
-                    gf.audio.play('music');
+                    gf.audio.playAll();
                     this.$elm.removeClass('paused');
                 }
             },

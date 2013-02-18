@@ -135,7 +135,7 @@ define([
 
             for(var i = 0, il = objs.length; i < il; ++i) {
                 var ent = objs[i].entity;
-                if(ent.owner && ent.owner.id !== this.id && ent.damage) {
+                if(ent.owner && ent.owner.id !== this.id && ent.owner.type !== this.type && ent.damage) {
                     switch(ent.type) {
                         case types.ENTITY.PROJECTILE:
                             this.takeDamage(ent.damage, ent.owner);
@@ -153,22 +153,35 @@ define([
         takeDamage: function(dmg, attacker) {
             this.health -= dmg;
 
+            attacker.onDoDamage(this);
+
             this.setActiveAnimation('damage');
 
             if(this.health <= 0)
                 this.die(attacker);
         },
         die: function(killer) {
+            if(this.dead) return;
+
             this.velocity.set(0, 0);
+            this.accel.set(0, 0);
             this.isCollidable = false;
+            this.dead = true;
+
             if(killer) killer.onKill(this);
-            gf.event.publish('entity.die', this.id);
-            //this.setActiveAnimation('die', function(forced) {
-                if(killer) console.log(this.name + ' (' + this.id + ') has been killed by ' + killer.name + ' (' + killer.id + ')');
+            gf.event.publish('entity.die', this);
+
+            if(this.anim.die) {
+                var self = this;
+                self.setActiveAnimation('die', function(forced) {
+                    gf.game.removeObject(self);
+                });
+            } else {
                 gf.game.removeObject(this);
-            //});
+            }
         },
-        onKill: function() {}
+        onKill: function(victim) {},
+        onDoDamage: function(victim) {}
     });
 
     bases.Enemy = bases.Ship.extend({

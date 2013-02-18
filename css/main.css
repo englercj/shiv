@@ -9,6 +9,47 @@ h1 {
     font-size: 1.4em;
 }
 
+.error { color: red; }
+.success { color: green; }
+.ajaxResp, .noname { display: none; }
+
+#overlay {
+    display: none;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    z-index: 9000;
+
+    background: #111;
+    opacity: 0.5;
+}
+
+#finish {
+    display: none;
+    position: absolute;
+    left: 50%;
+    top: 300px;
+    width: 300px;
+    margin-left: -150px;
+    text-align: center;
+    z-index: 9001;
+
+    background-color: #fff;
+    opacity: 1;
+    border: 1px solid #111;
+    border-radius: 5px;
+    padding: 15px;
+}
+
+#finish label {
+    display: inline-block;
+    width:100px;
+    text-align: left;
+}
+
 /* HUD */
 .gf-hud {
     color: #FFF;
@@ -41,7 +82,15 @@ h1 {
     height: 32px;
 }
 
-.gf-hud-item.gf-hud-score {
+.gf-hud-item.gf-hud-mute {
+    width: 17px;
+    height: 16px;
+    background: left top url(/assets/ui/mute.png) no-repeat transparent;
+    cursor: pointer;
+}
+
+.gf-hud-item.gf-hud-mute.paused {
+    background-position: -17px top;
 }
 
 /* Main game area */

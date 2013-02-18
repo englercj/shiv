@@ -8,7 +8,7 @@
         gf.debug.showFps = true; //show the FPS box
         gf.debug.showInfo = true; //show detailed debug info
         //gf.debug.showOutline = true; //show the outline of an entity (size)
-        gf.debug.showHitbox = true; //show the outline of an entity hitbox
+        //gf.debug.showHitbox = true; //show the outline of an entity hitbox
         //gf.debug.accessTiledUniforms = true;//gf.debug.tiledUniforms with an array of shader uniforms used by the TiledMapLayer object
         //gf.debug.showGamepadInfo = true; //show the gamepad state
         //gf.debug.showMapColliders = true; //show the map colliders
@@ -33,16 +33,26 @@
                 //initialize player
                 initPlayer();
 
+                gf.event.subscribe('entity.die', function(ent) {
+                    if(ent.type == gf.types.ENTITY.PLAYER) {
+                        gf.game.player = ent;
+                        ent.unbindKeys();
+                        gameOver(true);
+                    }
+                });
+
                 var rounds = [
                     //rows, cols, moveSpeed, fireRate
-                    [2, 5, 25, 0.15],
-                    [3, 10, 50, 0.30],
-                    [4, 15, 75, 0.45],
-                    [5, 20, 100, 0.60]
+                    [2, 5, 'sham', 25, 0.10],
+                    [3, 10, 'sham', 50, 0.25],
+                    [4, 15, 'sham', 75, 0.40],
+                    [5, 20, 'sham', 100, 0.55],
+                    [1, 1, 'shamboss', 10, 1]
                 ];
 
                 doRound(0);
                 function doRound(i) {
+                    gf.HUD.setItemValue('round', i + 1);
                     var args = Array.apply(null, rounds[i]);
                     args.push(function() {
                         setTimeout(doRound.bind(null, i + 1), 1000);
@@ -52,7 +62,7 @@
                 }
 
                 var current = 0,
-                    inv = setInterval(bgScroll, args[4]);
+                    inv = setInterval(bgScroll, 50);
                 function bgScroll() {
                     current += 1;
                     $('#game').css('backgroundPosition', '0 ' + current + 'px');
@@ -64,14 +74,29 @@
 
             gf.event.subscribe(gf.types.EVENT.LOADER_ERROR, function(err, resource) { console.log(err, resource); });
             gf.loader.load(data.resources);
+
+            $('#submitStats').on('click', function() {
+                var stats = gf.game.player.stats,
+                    name = $('#name').val();
+
+                $('.noname.error').hide();
+                $('.ajaxResp').hide();
+
+                if(!name) return $('.noname.error').show();
+
+                stats.score = gf.game.player.score;
+
+                alert('Submitted:\n' + JSON.stringify(stats, null, 2));
+                $('.ajaxResp.success').show();
+            });
         });
 
-        function playRound(rows, cols, moveSpeed, fireRate, cb) {
+        function playRound(rows, cols, ent, moveSpeed, fireRate, cb) {
             //initialize enemy
-            var enemies = initEnemies(rows, cols, moveSpeed, fireRate);
+            var enemies = initEnemies.apply(null, arguments);
 
-            var die = function(id) {
-                var i = enemies.indexOf(id);
+            var die = function(ent) {
+                var i = enemies.indexOf(ent.id);
 
                 enemies.splice(i, 1);
 
@@ -88,12 +113,17 @@
             gf.HUD.init();
 
             gf.HUD.addItem('mute', new hud.MusicMute(0, 0, { value: false }));
-            gf.HUD.addItem('score', new hud.Score(10, 0, { value: 0 }));
+            gf.HUD.addItem('round', new hud.Text(10, 0, { title: 'Round', value: 0 }));
+            gf.HUD.addItem('score', new hud.Text(10, 25, { title: 'Score', value: 0 }));
+            gf.HUD.addItem('accuracy', new hud.Text(10, 50, { title: 'Accuracy', value: 0 }));
             gf.HUD.addItem('health', new hud.HealthBar(0, 735, { value: 1 }));
 
-            var s = gf.HUD.items.score;
-            s.$elm.css('right', s.$elm.css('left'));
-            s.$elm.css('left', '');
+            var its = ['round', 'score', 'accuracy'];
+            for(var i = 0; i < its.length; ++i) {
+                var s = gf.HUD.items[its[i]];
+                s.$elm.css('right', s.$elm.css('left'));
+                s.$elm.css('left', '');
+            }
         }
 
         function initPlayer() {
@@ -105,15 +135,16 @@
             gf.game.addObject(player);
         }
 
-        function initEnemies(rows, cols, moveSpeed, fireRate) {
-            var ids = [];
+        function initEnemies(rows, cols, ent, moveSpeed, fireRate) {
+            var ids = [],
+                size = [64, 70];
 
             for(var x = 0; x < cols; ++x) {
                 for(var y = 0; y < rows; ++y) {
-                    var sham = gf.entityPool.create('sham', {
+                    var sham = gf.entityPool.create(ent, {
                         position: [
-                            (x * 40) - (cols * 20),
-                            (y * 40) + 400
+                            (x * size[0]) - (cols * (size[0] / 2.2)),
+                            (y * size[1]) + 400
                         ],
                         accel: [moveSpeed, moveSpeed],
                         fireRate: fireRate
@@ -124,12 +155,27 @@
             }
 
             return ids;
-            //initialize the enemy and add to game
-            /*var enemy = gf.entityPool.create('darknight', {
-                position: [400, 0]
-            });*/
+        }
 
-            //gf.game.addObject(enemy);
+        function gameOver(lost) {
+            var $fin = $('#finish'),
+                ent = gf.game.player;
+
+            if(lost) {
+                $fin.find('.title').text('You Lose!');
+                $fin.find('.lose').show();
+                $fin.addClass('lose');
+            } else {
+                $fin.find('.title').text('You Win!');
+                $fin.find('.win').show();
+                $fin.addClass('win');
+            }
+
+            $fin.find('.score').text(ent.score);
+            $fin.find('.accuracy').text((ent.stats.accuracy * 100).toFixed(2) + '%');
+            $fin.find('.kills').text(ent.stats.kills);
+            $fin.show();
+            $('#overlay').show();
         }
     });
 })(jQuery, window);

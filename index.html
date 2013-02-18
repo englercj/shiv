@@ -21,6 +21,24 @@
         <section id="game-container">
             <div id="game"></div>
         </section>
+        <div id="overlay"></div>
+        <div id="finish" >
+            <h2 class="title"></h2>
+            <div class="lose"></div>
+            <div class="win"></div>
+            <label for="score">Score:</label><span id="score" class="score"></span>
+            <br/>
+            <label for="accuracy">Accuracy:</label><span id="accuracy" class="accuracy"></span>
+            <br/>
+            <label for="kills">Shams:</label><span id="kills" class="kills"></span>
+            <br/><br/>
+            <label for="name">Your Name:</label><input id="name" type="text"/>
+            <br/><br/>
+            <span class="ajaxResp success">Stats submitted successfully</span>
+            <span class="ajaxResp error">Unable to submit stats to server, try again later</span>
+            <span class="noname error">Please enter your name</span>
+            <button id="submitStats">Submit Stats</button>
+        </div>
 
         <!-- jQuery -->
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
