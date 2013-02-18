@@ -24,72 +24,96 @@
             gf.event.subscribe(gf.types.EVENT.LOADER_COMPLETE, function() {
                 //initialize map and add to game
                 //gf.game.loadWorld('darkworld_world');
-                //play some MUSIKA
-                //gf.audio.play('darkworld_music', { loop: true });
-
-                //initialize HUD
-                initHud();
-
-                //initialize player
-                initPlayer();
-
-                gf.event.subscribe('entity.die', function(ent) {
-                    if(ent.type == gf.types.ENTITY.PLAYER) {
-                        gf.game.player = ent;
-                        ent.unbindKeys();
-                        gameOver(true);
-                    }
+                
+                $('#play').on('click', function() {
+                    playGame();
                 });
-
-                var rounds = [
-                    //rows, cols, moveSpeed, fireRate
-                    [2, 5, 'sham', 25, 0.10],
-                    [3, 10, 'sham', 50, 0.25],
-                    [4, 15, 'sham', 75, 0.40],
-                    [5, 20, 'sham', 100, 0.55],
-                    [1, 1, 'shamboss', 10, 1]
-                ];
-
-                doRound(0);
-                function doRound(i) {
-                    gf.HUD.setItemValue('round', i + 1);
-                    var args = Array.apply(null, rounds[i]);
-                    args.push(function() {
-                        setTimeout(doRound.bind(null, i + 1), 1000);
-                    });
-
-                    playRound.apply(null, args);
-                }
-
-                var current = 0,
-                    inv = setInterval(bgScroll, 50);
-                function bgScroll() {
-                    current += 1;
-                    $('#game').css('backgroundPosition', '0 ' + current + 'px');
-                }
-
-                //start render loop
-                gf.game.render();
             });
 
             gf.event.subscribe(gf.types.EVENT.LOADER_ERROR, function(err, resource) { console.log(err, resource); });
             gf.loader.load(data.resources);
+            
+            $.couch.urlPrefix = 'http://englercj.iriscouch.com:5984';
+            $.couch.login({
+                name: 'englercj',
+                password: '43pjde8d',
+                success: function(resp) {
+                    $('#submitStats').on('click', function() {
+                        var stats = gf.game.player.stats,
+                            name = $('#name').val();
 
-            $('#submitStats').on('click', function() {
-                var stats = gf.game.player.stats,
-                    name = $('#name').val();
+                        $('.noname.error').hide();
+                        $('.ajaxResp').hide();
 
-                $('.noname.error').hide();
-                $('.ajaxResp').hide();
+                        if(!name) return $('.noname.error').show();
 
-                if(!name) return $('.noname.error').show();
+                        stats.score = gf.game.player.score;
+                        stats.name = name;
 
-                stats.score = gf.game.player.score;
-
-                alert('Submitted:\n' + JSON.stringify(stats, null, 2));
-                $('.ajaxResp.success').show();
+                        $.couch.db('shiv_patlive_scores').saveDoc(stats, {
+                            success: function(resp) {
+                                $('.ajaxResp.success').show();
+                            },
+                            error: function(resp) {
+                                $('.ajaxResp.error').show();
+                            }
+                        });
+                    });
+                },
+                error: function(status, err, reason) {
+                    alert('Database not reachable, you will not be able to save your score!\nIf this is unacceptable please refresh and try again.');
+                }
             });
         });
+
+        function playGame() {
+            //play some MUSIKA
+            //gf.audio.play('darkworld_music', { loop: true });
+
+            //initialize HUD
+            initHud();
+
+            //initialize player
+            initPlayer();
+
+            gf.event.subscribe('entity.die', function(ent) {
+                if(ent.type == gf.types.ENTITY.PLAYER) {
+                    gf.game.player = ent;
+                    ent.unbindKeys();
+                    gameOver(true);
+                }
+            });
+
+            var rounds = [
+                //rows, cols, moveSpeed, fireRate
+                [2, 5, 'sham', 25, 0.10],
+                [3, 10, 'sham', 50, 0.25],
+                [4, 15, 'sham', 75, 0.40],
+                [5, 20, 'sham', 100, 0.55],
+                [1, 1, 'shamboss', 10, 1]
+            ];
+
+            doRound(0);
+            function doRound(i) {
+                gf.HUD.setItemValue('round', i + 1);
+                var args = Array.apply(null, rounds[i]);
+                args.push(function() {
+                    setTimeout(doRound.bind(null, i + 1), 1000);
+                });
+
+                playRound.apply(null, args);
+            }
+
+            var current = 0,
+                inv = setInterval(bgScroll, 50);
+            function bgScroll() {
+                current += 1;
+                $('#game').css('backgroundPosition', '0 ' + current + 'px');
+            }
+
+            //start render loop
+            gf.game.render();
+        }
 
         function playRound(rows, cols, ent, moveSpeed, fireRate, cb) {
             //initialize enemy

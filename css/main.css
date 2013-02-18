@@ -1,3 +1,8 @@
+@font-face {
+    font-family: "Museo";
+    src: url(/assets/fonts/Museo300-Regular.otf) format("opentype");
+}
+
 body {
     background:left top url(../assets/ui/bg.jpg) repeat #EBEBEB;
     color: black;
@@ -12,6 +17,11 @@ h1 {
 .error { color: red; }
 .success { color: green; }
 .ajaxResp, .noname { display: none; }
+
+.neon { font-family: "Museo"; color:#fff; }
+.neon.pink { text-shadow: 0 0 10px #FFFFFF, 0 0 20px #FFFFFF, 0 0 30px #FFFFFF, 0 0 40px #FF00DE, 0 0 70px #FF00DE, 0 0 80px #FF00DE, 0 0 100px #FF00DE, 0 0 150px #FF00DE; }
+.neon.green { text-shadow: 0 0 10px #FFFFFF, 0 0 20px #FFFFFF, 0 0 30px #FFFFFF, 0 0 40px #FF00DE, 0 0 70px #FF00DE, 0 0 80px #FF00DE, 0 0 100px #FF00DE, 0 0 150px #FF00DE; }
+.neon.blue { text-shadow: 0 0 5px #FFFFFF, 0 0 10px #FFFFFF, 0 0 15px #FFFFFF, 0 0 20px #2393ff, 0 0 30px #2393ff, 0 0 40px #2393ff, 0 0 50px #2393ff, 0 0 60px #2393ff; }
 
 #overlay {
     display: none;
@@ -131,6 +141,24 @@ h1 {
     position: absolute;
     top: 0;
     width: 1024px;
+}
+
+/* Menu */
+#menu {
+    height: 768px;
+    left: 50%;
+    margin-left: -512px;
+    position: absolute;
+    top: -384px;
+    width: 1024px;
+    text-align: center;
+}
+
+#menu > h1 { font-size: 5.0em; }
+#menu > h2 { font-size: 1.5em; }
+
+#menu > button {
+    
 }
 
 #gl-error { margin: 0.5em; }
