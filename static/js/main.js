@@ -10,7 +10,7 @@
     ], function(data, entities, hud) {
         //turn on some debugging properties
         //gf.debug.showFps = true; //show the FPS box
-        //gf.debug.showInfo = true; //show detailed debug info
+        gf.debug.showInfo = true; //show detailed debug info
         //gf.debug.showOutline = true; //show the outline of an entity (size)
         //gf.debug.showHitbox = true; //show the outline of an entity hitbox
         //gf.debug.accessTiledUniforms = true;//gf.debug.tiledUniforms with an array of shader uniforms used by the TiledMapLayer object
@@ -28,8 +28,8 @@
 
             //load resources
             gf.event.subscribe(gf.types.EVENT.LOADER_COMPLETE, function() {
-                //initialize map and add to game
-                //gf.game.loadWorld('darkworld_world');
+                //play some MUSIKA
+                gf.audio.play('bg_music', { loop: true, volume: 0.5 });
                 
                 $('#play').on('click', function() {
                     $('#menu').fadeOut(function() {
@@ -106,6 +106,8 @@
             $('#finish').hide();
             $('#overlay').hide();
 
+            gf.HUD.removeItem('bossbar');
+
             gf.event.unsubscribe('entity.die', enemyDie);
             gf.game.removeObject(gf.game.player);
 
@@ -113,9 +115,6 @@
         }
 
         function playGame(replay) {
-            //play some MUSIKA
-            //gf.audio.play('darkworld_music', { loop: true });
-
             //initialize HUD
             if(!replay) initHud();
 
@@ -131,11 +130,11 @@
 
             var rounds = [
                 //rows, cols, moveSpeed, fireRate
-                [2, 5, 'sham', 25, 0.10],
-                [3, 10, 'sham', 50, 0.25],
-                [4, 15, 'sham', 75, 0.40],
-                [5, 20, 'sham', 100, 0.55],
-                [1, 1, 'shamboss', 20, 1]
+                [2, 5, 'sham', 25, 0.10, 'Round 1'],
+                [3, 10, 'sham', 50, 0.25, 'Round 2'],
+                [4, 15, 'sham', 75, 0.40, 'Round 3'],
+                [5, 20, 'sham', 100, 0.55, 'Round 4'],
+                [1, 1, 'shamboss', 75, 5, 'Sham Boss!']
             ];
 
             doRound(0);
@@ -151,7 +150,9 @@
                     roundTo = setTimeout(doRound.bind(null, i + 1), 1000);
                 });
 
-                playRound.apply(null, args);
+                $('#roundText').text(args[5]).show().delay(2500).fadeOut('slow', function() {
+                    playRound.apply(null, args);
+                });
             }
 
             bgCurrent = 0;
@@ -165,7 +166,10 @@
             if(!replay) gf.game.render();
         }
 
-        function playRound(rows, cols, ent, moveSpeed, fireRate, cb) {
+        function playRound(rows, cols, ent, moveSpeed, fireRate, text, cb) {
+            if(ent == 'shamboss')
+                gf.HUD.addItem('bossbar', new hud.Bossbar(0, 0, { value: 0 }));
+
             //initialize enemy
             var enemies = initEnemies.apply(null, arguments);
 

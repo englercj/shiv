@@ -138,6 +138,7 @@ define([
                 });
             } else {
                 //gf.game.removeObject(this);
+                gf.event.publish('entity.die', this);
             }
         },
         onKill: function(victim) {

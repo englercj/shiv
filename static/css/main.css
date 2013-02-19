@@ -90,7 +90,7 @@ button:hover, .button:hover {
     text-align: right;
 }
 
-#finish .title { text-align: center; }
+#finish .title { text-align: center; margin-top: 0; font-size: 3em; }
 
 #finish input {
     border: 1px solid #2393ff;
@@ -117,6 +117,18 @@ button:hover, .button:hover {
 .gf-hud-item.gf-hud-health-value {
     background: rgb(200, 0, 15);
     border-radius: 4px 4px 0 0;
+    height: 32px;
+}
+
+.gf-hud-item.gf-hud-bossbar {
+    border-bottom: solid 1px #CCC;
+    border-radius: 0 0 4px 4px;
+    height: 32px;
+}
+
+.gf-hud-item.gf-hud-bossbar-value {
+    background: rgb(15, 0, 200);
+    border-radius: 0 0 4px 4px;
     height: 32px;
 }
 
@@ -198,6 +210,16 @@ button:hover, .button:hover {
         0 0 30px #2393ff,
         0 0 35px #2393ff,
         0 0 40px #2393ff;
+}
+
+#roundText {
+    position: absolute;
+    display: block;
+    width: 100%;
+    text-align: center;
+    top: 200px;
+
+    font-size: 5em;
 }
 
 #gl-error { margin: 0.5em; }

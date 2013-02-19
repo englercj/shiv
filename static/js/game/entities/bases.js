@@ -169,14 +169,15 @@ define([
             this.dead = true;
 
             if(killer) killer.onKill(this);
-            gf.event.publish('entity.die', this);
 
             if(this.anim.die) {
                 var self = this;
                 self.setActiveAnimation('die', function(forced) {
+                    gf.event.publish('entity.die', self);
                     gf.game.removeObject(self);
                 });
             } else {
+                gf.event.publish('entity.die', this);
                 gf.game.removeObject(this);
             }
         },
@@ -210,10 +211,10 @@ define([
             settings.accel = settings.accel || [100, 100];
 
             //maximum health of this entity
-            settings.maxHealth = 50;
+            settings.maxHealth = 30;
 
             //current health of this entity
-            settings.health = 50;
+            settings.health = 30;
 
             settings.points = 1000;
 

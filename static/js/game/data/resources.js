@@ -34,6 +34,11 @@ define([], function() {
             name: 'shoot_sound',
             type: gf.types.RESOURCE.AUDIO,
             src: '/assets/audio/shoot.wav'
+        },
+        {
+            name: 'bg_music',
+            type: gf.types.RESOURCE.MUSIC,
+            src: '/assets/audio/epic.ogg'
         }
     ];
 });

@@ -13,11 +13,6 @@ define([
                 this.dirty = false;
                 return this;
             },
-            blinkBar: function(clr) {
-                /*this.$val.stop(true)
-                        .animate({ backgroundColor: clr || 'red' }, 150)
-                        .animate({ backgroundColor: this.bgColor }, 150);*/
-            },
             _createElement: function(x, y) {
                 this._super(x, y);
                 this.$elm = $(this.elm);
@@ -32,10 +27,36 @@ define([
 
                 this.$val = $('<div/>', {
                     'class': 'gf-hud-item gf-hud-health-value ' + this.name
-                }).css({
-                    /*position: 'absolute',
-                    top: y,
-                    left: x*/
+                }).appendTo(this.$elm);
+            }
+        }),
+        Bossbar: gf.HudItem.extend({
+            init: function(x, y, settings) {
+                this._super(x, y, settings);
+            },
+            update: function() {
+                if(!this.dirty) return;
+
+                this.$val.css('width', this.$elm.width() * this.value);
+
+                this.dirty = false;
+                return this;
+            },
+            _createElement: function(x, y) {
+                this._super(x, y);
+                this.$elm = $(this.elm);
+                this.$elm.addClass('gf-hud-bossbar');
+
+                this.$elm.css({
+                    position: 'fixed',
+                    top: 0,
+                    left: '50%',
+                    width: 512,
+                    marginLeft: -256
+                });
+
+                this.$val = $('<div/>', {
+                    'class': 'gf-hud-item gf-hud-bossbar-value ' + this.name
                 }).appendTo(this.$elm);
             }
         }),
