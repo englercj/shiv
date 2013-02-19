@@ -16,7 +16,7 @@ define([
             settings.type = settings.type || types.ENTITY.PROJECTILE;
 
             //default distance to travel before expiring
-            this.distance = new THREE.Vector2(0, 1000);
+            this.distance = new gf.THREE.Vector2(0, 1000);
 
             //who owns the projectile
             this.owner = null;
@@ -34,14 +34,14 @@ define([
             this.zIndex = types.ZINDEX.PARTICLE;
 
             //distance this has traveled
-            this._traveled = new THREE.Vector2(0, 0);
+            this._traveled = new gf.THREE.Vector2(0, 0);
             this._expired = false;
         },
         update: function() {
             //update projectile movement
             this.updateMovement();
 
-            this._traveled.addSelf(this.velocity);
+            this._traveled.add(this.velocity);
 
             if(this._traveled.x >= this.distance.x && this._traveled.y >= this.distance.y && !this._expired)
                 this.expire();

@@ -53,7 +53,7 @@
                         var html = '';
                         resp.forEach(function(stat) {
                             html += '<li><span>';
-                            html += stat.name + ' - ' + stat.score;
+                            html += stat.name + ' - ' + stat.score + ' points';
                             html += '</span></li>';
                         });
                         console.log(resp, html);
@@ -237,9 +237,9 @@
                 $fin.addClass('win');
             }
 
-            $fin.find('.score').text(ent.score);
+            $fin.find('.score').text(ent.score + ' points');
             $fin.find('.accuracy').text((ent.stats.accuracy * 100).toFixed(2) + '%');
-            $fin.find('.kills').text(ent.stats.kills);
+            $fin.find('.kills').text(ent.stats.kills + ' destroyed');
             $fin.show();
             $('#overlay').show();
 

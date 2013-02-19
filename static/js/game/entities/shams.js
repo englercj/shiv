@@ -22,13 +22,13 @@ define([
             settings.accel = settings.accel || [25, 25];
 
             //default distance to travel before expiring
-            this.distance = new THREE.Vector2(0, 1200);
+            this.distance = new gf.THREE.Vector2(0, 1200);
 
             //how likely this sham is to fire a weapon
             this.fireRate = 0.10;
 
             //distance this has traveled
-            this._traveled = new THREE.Vector2(0, 0);
+            this._traveled = new gf.THREE.Vector2(0, 0);
 
             //call base constructor
             this._super(pos, settings);
@@ -46,7 +46,7 @@ define([
             this.velocity.x = 0;
             this.velocity.y = -this.accel.y * gf.game._delta;
 
-            this._traveled.subSelf(this.velocity);
+            this._traveled.sub(this.velocity);
 
             if(this._traveled.x >= this.distance.x && this._traveled.y >= this.distance.y)
                 return this.die();
