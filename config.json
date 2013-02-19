@@ -1,0 +1,13 @@
+{
+    "server": {
+        "host": "0.0.0.0",
+        "port": 8001
+    },
+    "riak": {
+        "host": "192.168.1.144",
+        "port": 8098,
+        "scores": {
+            "bucket": "scores"
+        }
+    }
+}

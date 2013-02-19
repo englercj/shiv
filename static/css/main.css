@@ -4,6 +4,7 @@
 }
 
 body {
+    font-family: "Museo"; 
     background:left top url(../assets/ui/bg.jpg) repeat #EBEBEB;
     color: black;
     font-family: Verdana,sans-serif;
@@ -38,6 +39,7 @@ h1 {
 }
 
 #finish {
+
     display: none;
     position: absolute;
     left: 50%;
@@ -158,7 +160,36 @@ h1 {
 #menu > h2 { font-size: 1.5em; }
 
 #menu > button {
-    
+    border: solid 3px #2393ff;
+    border-radius: 5px;
+    background: transparent;
+    padding: 5px 20px;
+    font-size: 1.2em;
+}
+
+#menu > button:hover { border-width: 2px; }
+
+#leaderboard {
+    margin: 0;
+    padding: 0;
+
+    counter-reset: li;
+    list-style: none;
+}
+
+#leaderboard > li > span:before {
+    content: counter(li) ")";
+    counter-increment: li;
+    position: relative; 
+    left: -0.5em;
+    text-shadow: 0 0 5px #FFFFFF,
+        0 0 10px #FFFFFF,
+        0 0 15px #FFFFFF,
+        0 0 20px #2393ff,
+        0 0 25px #2393ff,
+        0 0 30px #2393ff,
+        0 0 35px #2393ff,
+        0 0 40px #2393ff;
 }
 
 #gl-error { margin: 0.5em; }

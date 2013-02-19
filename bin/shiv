@@ -1,0 +1,42 @@
+#!/usr/bin/env node
+
+var path = require('path'),
+    express = require('express'),
+    riak = require('riak-js'),
+    config = require(path.join('..', 'config.json')),
+    app = express(),
+    db = riak.getClient(config.riak),
+    PORT = process.env.SHIV_PORT || 8001;
+
+app.use(express.bodyParser());
+app.use(express.static(path.join(__dirname, '..', 'static')));
+app.use(app.router);
+
+app.get('/_store/top/:num?', function(req, res) {
+    db.mapreduce
+        .add(config.riak.scores.bucket)
+        .map('Riak.mapValuesJson')
+        .reduce('Riak.filterNotFound')
+        .reduce(function(value, count, arg) {
+            return value.sort(function(a, b) {
+                return b.score - a.score;
+            }).slice(0, 5);
+        }, parseInt(req.params.num, 10) || 10)
+        .run(function(err, scores) {
+            if(err)
+                res.send({ error: err });
+            else
+                res.send(scores);
+        });
+});
+
+app.put('/_store/score', function(req, res) {
+    var key = req.body.name + '_' + req.body.score;
+    db.save(config.riak.scores.bucket, key, req.body, function(err) {
+        res.json({ error: err });
+    });
+});
+
+app.listen(config.server.port, config.server.host, function() {
+    console.log('listening on %s:%s', config.server.host, config.server.port);
+});

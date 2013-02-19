@@ -1,0 +1,9 @@
+{
+    "name": "shiv",
+    "version": "0.0.1",
+    "description": "tehehe",
+    "dependencies": {
+        "riak-js": "0.9.x",
+        "express": "3.x"
+    }
+}

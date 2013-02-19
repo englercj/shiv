@@ -26,42 +26,64 @@
                 //gf.game.loadWorld('darkworld_world');
                 
                 $('#play').on('click', function() {
-                    playGame();
+                    $('#menu').fadeOut(function() {
+                        playGame();
+                    });
                 });
             });
 
             gf.event.subscribe(gf.types.EVENT.LOADER_ERROR, function(err, resource) { console.log(err, resource); });
             gf.loader.load(data.resources);
-            
-            $.couch.urlPrefix = 'http://englercj.iriscouch.com:5984';
-            $.couch.login({
-                name: 'englercj',
-                password: '43pjde8d',
+
+            $('#submitStats').on('click', function() {
+                var stats = gf.game.player.stats,
+                    name = $('#name').val();
+
+                $('.noname.error').hide();
+                $('.ajaxResp').hide();
+
+                if(!name) return $('.noname.error').show();
+
+                stats.score = gf.game.player.score;
+                stats.name = name;
+
+                $.ajax({
+                    type: 'PUT',
+                    url: '/_store/score',
+                    data: stats,
+                    success: function(resp) {
+                        if(resp.error)
+                            $('.ajaxResp.error').show();
+                        else
+                            $('.ajaxResp.success').show();
+                    },
+                    error: function(resp) {
+                        $('.ajaxResp.error').show();
+                    }
+                });
+            });
+
+
+            $.ajax({
+                type: 'GET',
+                url: '/_store/top/10',
                 success: function(resp) {
-                    $('#submitStats').on('click', function() {
-                        var stats = gf.game.player.stats,
-                            name = $('#name').val();
-
-                        $('.noname.error').hide();
-                        $('.ajaxResp').hide();
-
-                        if(!name) return $('.noname.error').show();
-
-                        stats.score = gf.game.player.score;
-                        stats.name = name;
-
-                        $.couch.db('shiv_patlive_scores').saveDoc(stats, {
-                            success: function(resp) {
-                                $('.ajaxResp.success').show();
-                            },
-                            error: function(resp) {
-                                $('.ajaxResp.error').show();
-                            }
+                    var $board = $('#leaderboard').empty();
+                    if(resp.error)
+                        $board.html('<li>Unable to load leaderboard: ' + resp.error + '</li>');
+                    else {
+                        var html = '';
+                        resp.forEach(function(stat) {
+                            html += '<li><span>';
+                            html += stat.name + ' - ' + stat.score;
+                            html += '</span></li>';
                         });
-                    });
+                        console.log(resp, html);
+                        $board.html(html);
+                    }
                 },
-                error: function(status, err, reason) {
-                    alert('Database not reachable, you will not be able to save your score!\nIf this is unacceptable please refresh and try again.');
+                error: function(resp) {
+                    $('.ajaxResp.error').show();
                 }
             });
         });
