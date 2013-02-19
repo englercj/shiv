@@ -124,8 +124,6 @@
             if(!replay) {
                 gf.event.subscribe('entity.die', function(ent) {
                     if(ent.type == gf.types.ENTITY.PLAYER) {
-                        //gf.game.player = ent;
-                        ent.unbindKeys();
                         gameOver(true);
                     }
                 });
@@ -137,11 +135,15 @@
                 [3, 10, 'sham', 50, 0.25],
                 [4, 15, 'sham', 75, 0.40],
                 [5, 20, 'sham', 100, 0.55],
-                [1, 1, 'shamboss', 10, 1]
+                [1, 1, 'shamboss', 20, 1]
             ];
 
             doRound(0);
             function doRound(i) {
+                if(i === rounds.length) {
+                    return gameOver();
+                }
+
                 clearTimeout(roundTo);
                 gf.HUD.setItemValue('round', i + 1);
                 var args = Array.apply(null, rounds[i]);
@@ -225,7 +227,7 @@
                             (x * size[0]) - (cols * (size[0] / 2.2)),
                             (y * size[1]) + 400
                         ],
-                        accel: [moveSpeed, moveSpeed],
+                        accel: [moveSpeed * 5, moveSpeed],
                         fireRate: fireRate
                     });
                     ids.push(sham.id);
@@ -237,6 +239,8 @@
         }
 
         function gameOver(lost) {
+            gf.game.player.unbindKeys();
+
             var $fin = $('#finish'),
                 ent = gf.game.player;
 

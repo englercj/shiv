@@ -210,10 +210,10 @@ define([
             settings.accel = settings.accel || [100, 100];
 
             //maximum health of this entity
-            settings.maxHealth = 10;
+            settings.maxHealth = 50;
 
             //current health of this entity
-            settings.health = 10;
+            settings.health = 50;
 
             settings.points = 1000;
 
