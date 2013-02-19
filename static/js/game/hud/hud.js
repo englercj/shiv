@@ -23,6 +23,13 @@ define([
                 this.$elm = $(this.elm);
                 this.$elm.addClass('gf-hud-health');
 
+                this.$elm.css({
+                    position: 'fixed',
+                    bottom: 0,
+                    top: '',
+                    left: ''
+                });
+
                 this.$val = $('<div/>', {
                     'class': 'gf-hud-item gf-hud-health-value ' + this.name
                 }).css({

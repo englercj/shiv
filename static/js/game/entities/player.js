@@ -31,6 +31,8 @@ define([
             //current health of this entity
             settings.health = 2;
 
+            this.max = new gf.THREE.Vector2(200, 200);
+
             //call base constructor
             this._super(pos, settings);
 
@@ -90,10 +92,10 @@ define([
             var nx = this._mesh.position.x + this.velocity.x,
                 ny = this._mesh.position.y + this.velocity.y;
 
-            if(nx < -495 || nx > 495)
+            if(nx < -this.max.x || nx > this.max.x)
                 this.velocity.x = 0;
 
-            if(ny < -330 || ny > 355)
+            if(ny < -this.max.y || ny > this.max.y)
                 this.velocity.y = 0;
 
             //update animation
@@ -120,6 +122,7 @@ define([
 
             if(!gf.HUD.getItemValue('mute'))
                 gf.audio.play('explosion_sound');
+
             this.velocity.set(0, 0);
             this.accel.set(0, 0);
             this.isCollidable = false;
@@ -157,6 +160,7 @@ define([
 
             if(!gf.HUD.getItemValue('mute'))
                 gf.audio.play('shoot_sound');
+
             setTimeout(this._shootCooldown.bind(this), this.shootWait);
             this.shootReady = false;
             this.stats.shots++;

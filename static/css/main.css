@@ -105,24 +105,12 @@ button:hover, .button:hover {
     color: #FFF;
     font-style: italic;
     text-align: center;
-
-    /*height: 150px;
-    top: -275px;
-
-    width: 700px;
-    left: 50%;
-    margin-left: -350px;
-    position: absolute;
-
-    display:none;
-    z-index: 100;*/
 }
 
 .gf-hud-item.gf-hud-health {
-    /*background: left top url(../assets/ui/magic_meter.png) no-repeat;*/
     border-top: solid 1px #CCC;
     border-radius: 4px 4px 0 0;
-    width: 1024px;
+    width: 100%;
     height: 32px;
 }
 
@@ -147,9 +135,7 @@ button:hover, .button:hover {
 #game-container {
     display: block;
     position: absolute;
-    top: 50%;
-    left: 0;
-    height: 1px;
+    height: 100%;
     width: 100%;
     overflow: visible;
     text-align: center;
@@ -160,21 +146,15 @@ button:hover, .button:hover {
 }
 
 #game {
-    height: 768px;
-    left: 50%;
-    margin-left: -512px;
-    position: absolute;
-    top: -384px;
-    width: 1024px;
+    height: 100%;
+    width: 100%;
     background:center top url(/assets/ui/starworld1.gif) #000;
     -moz-user-select: none;
     -webkit-user-select: none;
     -ms-user-select: none;
-    /*display: none;*/
 }
 
 #game canvas {
-    /*display: block;*/
     height: 768px;
     left: 0;
     margin: 0;
@@ -185,12 +165,11 @@ button:hover, .button:hover {
 
 /* Menu */
 #menu {
-    height: 768px;
-    left: 50%;
-    margin-left: -512px;
     position: absolute;
-    top: -384px;
-    width: 1024px;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
     text-align: center;
 }
 

@@ -67,6 +67,8 @@
 
             $('#initMsg').hide();
             $('#play').show();
+
+            $(window).on('resize', onWinResize);
         });
 
         function submitStats() {
@@ -178,7 +180,7 @@
         function initHud() {
             gf.HUD.init();
 
-            gf.HUD.addItem('mute', new hud.MusicMute(0, 0, { value: false }));
+            gf.HUD.addItem('mute', new hud.MusicMute(10, 10, { value: false }));
             gf.HUD.addItem('round', new hud.Text(10, 0, { title: 'Round', value: 0 }));
             gf.HUD.addItem('score', new hud.Text(10, 25, { title: 'Score', value: 0 }));
             gf.HUD.addItem('accuracy', new hud.Text(10, 50, { title: 'Accuracy', value: 0 }));
@@ -198,7 +200,15 @@
                 position: [0, 0]
             });
 
+            gf.HUD.setItemValue('health', 1);
             gf.game.addObject(player);
+            onWinResize();
+        }
+
+        function onWinResize() {
+            var $c = $(gf.game._cont);
+            if(gf.game.player)
+                gf.game.player.max.set(($c.width() / 2) - 16, ($c.height() / 2) - 32);
         }
 
         function initEnemies(rows, cols, ent, moveSpeed, fireRate) {
