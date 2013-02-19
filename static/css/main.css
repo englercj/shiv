@@ -171,6 +171,7 @@ button:hover, .button:hover {
     top: 0;
     left: 0;
     text-align: center;
+    z-index: 9001;
 }
 
 #menu > h1 { font-size: 5.0em; }

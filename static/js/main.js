@@ -56,7 +56,6 @@
                             html += stat.name + ' - ' + stat.score + ' points';
                             html += '</span></li>';
                         });
-                        console.log(resp, html);
                         $board.html(html);
                     }
                 },
