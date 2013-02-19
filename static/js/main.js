@@ -5,7 +5,7 @@
         'game/hud/hud'
     ], function(data, entities, hud) {
         //turn on some debugging properties
-        gf.debug.showFps = true; //show the FPS box
+        //gf.debug.showFps = true; //show the FPS box
         //gf.debug.showInfo = true; //show detailed debug info
         //gf.debug.showOutline = true; //show the outline of an entity (size)
         //gf.debug.showHitbox = true; //show the outline of an entity hitbox
@@ -13,7 +13,7 @@
         //gf.debug.showGamepadInfo = true; //show the gamepad state
         //gf.debug.showMapColliders = true; //show the map colliders
 
-        var bgCurrent, bgInv;
+        var bgCurrent, bgInv, roundTo, enemyDie;
 
         $(function() {
             //initialize the renderer
@@ -98,43 +98,33 @@
         }
 
         function replayGame() {
-            //Clear HUD
-            gf.HUD.removeItem('mute');
-            gf.HUD.removeItem('round');
-            gf.HUD.removeItem('score');
-            gf.HUD.removeItem('accuracy');
-            gf.HUD.removeItem('health');
-
-            //clear Entities
-            $.each(gf.game.objects, function(k, v) {
-                gf.game.removeObject(v);
-            });
-
-            clearInterval(bgInv);
-
             $('#finish').hide();
             $('#overlay').hide();
 
-            playGame();
+            gf.event.unsubscribe('entity.die', enemyDie);
+            gf.game.removeObject(gf.game.player);
+
+            playGame(true);
         }
 
-        function playGame() {
+        function playGame(replay) {
             //play some MUSIKA
             //gf.audio.play('darkworld_music', { loop: true });
 
             //initialize HUD
-            initHud();
+            if(!replay) initHud();
 
             //initialize player
             initPlayer();
-
-            gf.event.subscribe('entity.die', function(ent) {
-                if(ent.type == gf.types.ENTITY.PLAYER) {
-                    gf.game.player = ent;
-                    ent.unbindKeys();
-                    gameOver(true);
-                }
-            });
+            if(!replay) {
+                gf.event.subscribe('entity.die', function(ent) {
+                    if(ent.type == gf.types.ENTITY.PLAYER) {
+                        //gf.game.player = ent;
+                        ent.unbindKeys();
+                        gameOver(true);
+                    }
+                });
+            }
 
             var rounds = [
                 //rows, cols, moveSpeed, fireRate
@@ -147,10 +137,11 @@
 
             doRound(0);
             function doRound(i) {
+                clearTimeout(roundTo);
                 gf.HUD.setItemValue('round', i + 1);
                 var args = Array.apply(null, rounds[i]);
                 args.push(function() {
-                    setTimeout(doRound.bind(null, i + 1), 1000);
+                    roundTo = setTimeout(doRound.bind(null, i + 1), 1000);
                 });
 
                 playRound.apply(null, args);
@@ -160,29 +151,28 @@
             bgInv = setInterval(bgScroll, 50);
             function bgScroll() {
                 bgCurrent += 1;
-                $('#game').css('backgroundPosition', '0 ' + current + 'px');
+                $('#game').css('backgroundPosition', '0 ' + bgCurrent + 'px');
             }
 
             //start render loop
-            gf.game.render();
+            if(!replay) gf.game.render();
         }
 
         function playRound(rows, cols, ent, moveSpeed, fireRate, cb) {
             //initialize enemy
             var enemies = initEnemies.apply(null, arguments);
 
-            var die = function(ent) {
+            enemyDie = function(ent) {
                 var i = enemies.indexOf(ent.id);
 
                 enemies.splice(i, 1);
 
                 if(enemies.length === 0) {
-                    gf.event.unsubscribe('entity.die', die);
-                    cb();
+                    gf.event.unsubscribe('entity.die', enemyDie);
+                    if(cb) cb();
                 }
-            }
-
-            gf.event.subscribe('entity.die', die);
+            };
+            gf.event.subscribe('entity.die', enemyDie);
         }
 
         function initHud() {
@@ -252,6 +242,13 @@
             $fin.find('.kills').text(ent.stats.kills);
             $fin.show();
             $('#overlay').show();
+
+            //clear Entities
+            clearTimeout(roundTo);
+            clearInterval(bgInv);
+            $.each(gf.game.objects, function(k, v) {
+                gf.game.removeObject(v);
+            });
         }
     });
 })(jQuery, window);

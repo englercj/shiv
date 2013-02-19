@@ -23,10 +23,17 @@ app.get('/_store/top/:num?', function(req, res) {
             }).slice(0, 5);
         }, parseInt(req.params.num, 10) || 10)
         .run(function(err, scores) {
-            if(err)
-                res.send({ error: err });
-            else
-                res.send(scores);
+            try {
+                if(err)
+                    res.send({ error: err });
+                else
+                    res.send(scores);
+            } catch(e) {
+                if(e.code == 'ECONNRESET') {
+                    console.log('Error sending response, connection reset. Is riak down?');
+                }
+                else console.log('Error sending response:', e);
+            }
         });
 });
 

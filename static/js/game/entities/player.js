@@ -130,11 +130,11 @@ define([
             if(this.anim.die) {
                 var self = this;
                 self.setActiveAnimation('die', function(forced) {
-                    gf.game.removeObject(self);
+                    //gf.game.removeObject(self);
                     gf.event.publish('entity.die', self);
                 });
             } else {
-                gf.game.removeObject(this);
+                //gf.game.removeObject(this);
             }
         },
         onKill: function(victim) {
