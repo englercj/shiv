@@ -1,4 +1,8 @@
 (function($, window, undefined) {
+    require.config({
+        urlArgs: "nocache=" +  (new Date()).getTime()
+    });
+
     require([
         'game/data/data',
         'game/entities/entities',
