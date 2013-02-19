@@ -6,12 +6,14 @@
     ], function(data, entities, hud) {
         //turn on some debugging properties
         gf.debug.showFps = true; //show the FPS box
-        gf.debug.showInfo = true; //show detailed debug info
+        //gf.debug.showInfo = true; //show detailed debug info
         //gf.debug.showOutline = true; //show the outline of an entity (size)
         //gf.debug.showHitbox = true; //show the outline of an entity hitbox
         //gf.debug.accessTiledUniforms = true;//gf.debug.tiledUniforms with an array of shader uniforms used by the TiledMapLayer object
         //gf.debug.showGamepadInfo = true; //show the gamepad state
         //gf.debug.showMapColliders = true; //show the map colliders
+
+        var bgCurrent, bgInv;
 
         $(function() {
             //initialize the renderer
@@ -35,38 +37,14 @@
             gf.event.subscribe(gf.types.EVENT.LOADER_ERROR, function(err, resource) { console.log(err, resource); });
             gf.loader.load(data.resources);
 
-            $('#submitStats').on('click', function() {
-                var stats = gf.game.player.stats,
-                    name = $('#name').val();
-
-                $('.noname.error').hide();
-                $('.ajaxResp').hide();
-
-                if(!name) return $('.noname.error').show();
-
-                stats.score = gf.game.player.score;
-                stats.name = name;
-
-                $.ajax({
-                    type: 'PUT',
-                    url: '/_store/score',
-                    data: stats,
-                    success: function(resp) {
-                        if(resp.error)
-                            $('.ajaxResp.error').show();
-                        else
-                            $('.ajaxResp.success').show();
-                    },
-                    error: function(resp) {
-                        $('.ajaxResp.error').show();
-                    }
-                });
-            });
+            $('#submitStats').on('click', submitStats);
+            $('#replayGame').on('click', replayGame);
 
 
             $.ajax({
                 type: 'GET',
                 url: '/_store/top/10',
+                cache: false,
                 success: function(resp) {
                     var $board = $('#leaderboard').empty();
                     if(resp.error)
@@ -86,7 +64,59 @@
                     $('.ajaxResp.error').show();
                 }
             });
+
+            $('#initMsg').hide();
+            $('#play').show();
         });
+
+        function submitStats() {
+            var stats = gf.game.player.stats,
+                name = $('#name').val();
+
+            $('.noname.error').hide();
+            $('.ajaxResp').hide();
+
+            if(!name) return $('.noname.error').show();
+
+            stats.score = gf.game.player.score;
+            stats.name = name;
+
+            $.ajax({
+                type: 'PUT',
+                url: '/_store/score',
+                data: stats,
+                success: function(resp) {
+                    if(resp.error)
+                        $('.ajaxResp.error').show();
+                    else
+                        $('.ajaxResp.success').show();
+                },
+                error: function(resp) {
+                    $('.ajaxResp.error').show();
+                }
+            });
+        }
+
+        function replayGame() {
+            //Clear HUD
+            gf.HUD.removeItem('mute');
+            gf.HUD.removeItem('round');
+            gf.HUD.removeItem('score');
+            gf.HUD.removeItem('accuracy');
+            gf.HUD.removeItem('health');
+
+            //clear Entities
+            $.each(gf.game.objects, function(k, v) {
+                gf.game.removeObject(v);
+            });
+
+            clearInterval(bgInv);
+
+            $('#finish').hide();
+            $('#overlay').hide();
+
+            playGame();
+        }
 
         function playGame() {
             //play some MUSIKA
@@ -126,10 +156,10 @@
                 playRound.apply(null, args);
             }
 
-            var current = 0,
-                inv = setInterval(bgScroll, 50);
+            bgCurrent = 0;
+            bgInv = setInterval(bgScroll, 50);
             function bgScroll() {
-                current += 1;
+                bgCurrent += 1;
                 $('#game').css('backgroundPosition', '0 ' + current + 'px');
             }
 

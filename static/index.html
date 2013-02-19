@@ -28,26 +28,28 @@
                     <li>Loading top 10 scores...</li>
                 </ol>
                 <br/><br/>
-                <button id="play" class="button neon blue">Play</button>
+                <span id="initMsg" class="neon blue">Initializing...</span>
+                <button id="play" class="hidden">Play</button>
             </div>
         </section>
         <div id="overlay"></div>
         <div id="finish" >
-            <h2 class="title"></h2>
-            <div class="lose"></div>
-            <div class="win"></div>
+            <h2 class="title neon blue"></h2>
+            <div class="lose neon blue"></div>
+            <div class="win neon blue"></div>
+            <label for="name">Your Name:</label><input id="name" type="text"/>
+            <br/><br/>
             <label for="score">Score:</label><span id="score" class="score"></span>
             <br/>
             <label for="accuracy">Accuracy:</label><span id="accuracy" class="accuracy"></span>
             <br/>
             <label for="kills">Shams:</label><span id="kills" class="kills"></span>
             <br/><br/>
-            <label for="name">Your Name:</label><input id="name" type="text"/>
-            <br/><br/>
             <span class="ajaxResp success">Stats submitted successfully</span>
             <span class="ajaxResp error">Unable to submit stats to server, try again later</span>
             <span class="noname error">Please enter your name</span>
             <button id="submitStats">Submit Stats</button>
+            <button id="replayGame">Play Again</button>
         </div>
 
         <!-- jQuery -->

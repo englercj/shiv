@@ -19,10 +19,37 @@ h1 {
 .success { color: green; }
 .ajaxResp, .noname { display: none; }
 
+.hidden { display: none; }
+
 .neon { font-family: "Museo"; color:#fff; }
 .neon.pink { text-shadow: 0 0 10px #FFFFFF, 0 0 20px #FFFFFF, 0 0 30px #FFFFFF, 0 0 40px #FF00DE, 0 0 70px #FF00DE, 0 0 80px #FF00DE, 0 0 100px #FF00DE, 0 0 150px #FF00DE; }
-.neon.green { text-shadow: 0 0 10px #FFFFFF, 0 0 20px #FFFFFF, 0 0 30px #FFFFFF, 0 0 40px #FF00DE, 0 0 70px #FF00DE, 0 0 80px #FF00DE, 0 0 100px #FF00DE, 0 0 150px #FF00DE; }
 .neon.blue { text-shadow: 0 0 5px #FFFFFF, 0 0 10px #FFFFFF, 0 0 15px #FFFFFF, 0 0 20px #2393ff, 0 0 30px #2393ff, 0 0 40px #2393ff, 0 0 50px #2393ff, 0 0 60px #2393ff; }
+
+button, .button {
+    border: solid 3px #2393ff;
+    border-radius: 5px;
+    background: transparent;
+    padding: 5px 20px;
+    font-size: 1.2em;
+    margin: 0;
+    color: #fff;
+    text-shadow: 0 0 5px #FFFFFF,
+        0 0 10px #FFFFFF,
+        0 0 15px #FFFFFF,
+        0 0 20px #2393ff,
+        0 0 25px #2393ff,
+        0 0 30px #2393ff,
+        0 0 35px #2393ff,
+        0 0 40px #2393ff;
+}
+
+button:hover, .button:hover {
+    border-width: 2px;
+    margin: 1px;
+    text-shadow: 0 0 5px #FFFFFF,
+        0 0 10px #FFFFFF,
+        0 0 15px #FFFFFF;
+}
 
 #overlay {
     display: none;
@@ -46,20 +73,31 @@ h1 {
     top: 300px;
     width: 300px;
     margin-left: -150px;
-    text-align: center;
     z-index: 9001;
 
-    background-color: #fff;
+    background-color: #000;
     opacity: 1;
-    border: 1px solid #111;
+    border: 2px solid #2393ff;
     border-radius: 5px;
-    padding: 15px;
+    padding: 25px;
+    color: #fff;
 }
 
 #finish label {
     display: inline-block;
-    width:100px;
-    text-align: left;
+    width: 100px;
+    margin-right: 10px;
+    text-align: right;
+}
+
+#finish .title { text-align: center; }
+
+#finish input {
+    border: 1px solid #2393ff;
+    border-radius: 3px;
+    background: #000;
+    color: #fff;
+    padding: 2px;
 }
 
 /* HUD */
@@ -158,16 +196,6 @@ h1 {
 
 #menu > h1 { font-size: 5.0em; }
 #menu > h2 { font-size: 1.5em; }
-
-#menu > button {
-    border: solid 3px #2393ff;
-    border-radius: 5px;
-    background: transparent;
-    padding: 5px 20px;
-    font-size: 1.2em;
-}
-
-#menu > button:hover { border-width: 2px; }
 
 #leaderboard {
     margin: 0;
