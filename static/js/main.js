@@ -17,7 +17,7 @@
         //gf.debug.showGamepadInfo = true; //show the gamepad state
         //gf.debug.showMapColliders = true; //show the map colliders
 
-        var bgCurrent, bgInv, roundTo, enemyDie;
+        var bgCurrent, bgInv, roundTo, enemyDie, lastStats;
 
         $(function() {
             //initialize the renderer
@@ -75,21 +75,19 @@
         });
 
         function submitStats() {
-            var stats = gf.game.player.stats,
-                name = $('#name').val();
+            var name = $('#name').val();
 
             $('.noname.error').hide();
             $('.ajaxResp').hide();
 
             if(!name) return $('.noname.error').show();
 
-            stats.score = gf.game.player.score;
-            stats.name = name;
+            lastStats.name = name;
 
             $.ajax({
                 type: 'PUT',
                 url: '/_store/score',
-                data: stats,
+                data: lastStats,
                 success: function(resp) {
                     if(resp.error)
                         $('.ajaxResp.error').show();
@@ -247,6 +245,9 @@
 
             var $fin = $('#finish'),
                 ent = gf.game.player;
+
+            lastStats = ent.stats;
+            lastStats.score = ent.score;
 
             if(lost) {
                 $fin.find('.title').text('You Lose!');
