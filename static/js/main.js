@@ -47,7 +47,7 @@
 
             $.ajax({
                 type: 'GET',
-                url: '/_store/top/10',
+                url: '/_store/top/5',
                 cache: false,
                 success: function(resp) {
                     var $board = $('#leaderboard').empty();
