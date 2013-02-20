@@ -30,6 +30,7 @@
             gf.event.subscribe(gf.types.EVENT.LOADER_COMPLETE, function() {
                 //play some MUSIKA
                 gf.audio.play('bg_music', { loop: true, volume: 0.5 });
+                gf.HUD.addItem('mute', new hud.MusicMute(10, 10, { value: false }));
                 
                 $('#play').on('click', function() {
                     $('#menu').fadeOut(function() {
@@ -187,7 +188,6 @@
         function initHud() {
             gf.HUD.init();
 
-            gf.HUD.addItem('mute', new hud.MusicMute(10, 10, { value: false }));
             gf.HUD.addItem('round', new hud.Text(10, 0, { title: 'Round', value: 0 }));
             gf.HUD.addItem('score', new hud.Text(10, 25, { title: 'Score', value: 0 }));
             gf.HUD.addItem('accuracy', new hud.Text(10, 50, { title: 'Accuracy', value: 0 }));
