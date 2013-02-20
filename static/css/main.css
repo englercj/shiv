@@ -179,11 +179,12 @@ button:hover, .button:hover {
 #menu {
     position: absolute;
     height: 100%;
-    width: 100%;
+    width: 700px;
     top: 0;
-    left: 0;
+    left: 50%;
+    margin-left: 350px;
     text-align: center;
-    z-index: 9001;
+    z-index: 5;
 }
 
 #menu > h1 { font-size: 5.0em; }
