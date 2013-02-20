@@ -182,7 +182,7 @@ button:hover, .button:hover {
     width: 700px;
     top: 0;
     left: 50%;
-    margin-left: 350px;
+    margin-left: -350px;
     text-align: center;
     z-index: 5;
 }
