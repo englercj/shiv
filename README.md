@@ -6,21 +6,13 @@ of the award this time around, and this game is dedicated to him.
 
 ## Run the game
 
-The game needs to be served by a webserver. If you have a server that is serving the `/var/www` folder, you can do:
+For a quick setup you can use the built in webserver:
 
 ```shell
-git clone https://github.com/englercj/shiv.git /var/www/shiv
-```
-
-Then visit `yoursite.com/shiv`
-
-If you don't feel like setting up something like Nginx or Apache2 you can use the built-in server (requires [node.js][0]):
-
-```shell
-git clone https://github.com/englercj/shiv.git &&
+git clone https://github.com/englercj/shiv.git
 cd shiv &&
-npm install express &&
-node server.js
+npm install &&
+./bin/shiv
 ```
 
 Then visit `yoursite.com:8001` to play.
