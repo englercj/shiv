@@ -83,6 +83,7 @@ define([
         MusicMute: gf.HudItem.extend({
             init: function(x, y, settings) {
                 this._super(x, y, settings);
+                this.dirty = false;
             },
             onClick: function() {
                 this.setValue(!this.value);

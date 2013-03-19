@@ -195,6 +195,7 @@ define([
 
             gf.controls.bindKey(gf.types.KEY.NUMPAD0, 'fire', this.onFire.bind(this));
             gf.controls.bindKey(gf.types.KEY.DELETE, 'fire', this.onFire.bind(this));
+            gf.controls.bindKey(gf.types.KEY.SPACE, 'fire', this.onFire.bind(this));
             gf.controls.bindKey(gf.types.KEY.NUMPAD_DOT, 'bomb', this.onBomb.bind(this));
             gf.controls.bindKey(gf.types.KEY.B, 'bomb', this.onBomb.bind(this));
         },
@@ -211,6 +212,7 @@ define([
 
             gf.controls.unbindKey(gf.types.KEY.NUMPAD0, 'fire');
             gf.controls.unbindKey(gf.types.KEY.DELETE, 'fire');
+            gf.controls.unbindKey(gf.types.KEY.SPACE, 'fire', this.onFire.bind(this));
             gf.controls.unbindKey(gf.types.KEY.NUMPAD_DOT, 'bomb');
             gf.controls.unbindKey(gf.types.KEY.B, 'bomb');
         },

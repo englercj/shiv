@@ -121,7 +121,6 @@ define([
                 $c.height() / 6.5,   //bottom
                 $c.width() / -2.5     //left
             ];
-            console.log(this.max, pos);
 
             //add animations
             this.addAnimation('normal', [0]);
