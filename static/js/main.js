@@ -240,6 +240,8 @@
         }
 
         function gameOver(lost) {
+            if(!gf.game.player) return;
+
             gf.game.player.unbindKeys();
 
             var $fin = $('#finish'),
